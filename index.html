@@ -23,14 +23,16 @@ button,select,input{font:inherit}button{cursor:pointer;border:0;border-radius:14
 </head>
 <body><main class="wrap">
 <header class="top"><div class="brand">W<span>O</span>P <span style="color:#fff8f5;letter-spacing:.06em">/ COUPLE CHALLENGE</span></div><div class="tag">18+ · MUTIG, ABER FREIWILLIG</div></header>
-<section class="hero"><div class="eyebrow">EURE DATE NIGHT · NEUE MOMENTE</div><h1>Wahrheit oder<br>Intim?</h1><p>Stellt euch ehrlichen Fragen oder wagt eine intime Challenge. Für erwachsene Paare, die sich näherkommen und offen miteinander sein möchten.</p></section>
+<section class="hero"><div class="eyebrow">EURE DATE NIGHT · NEUE MOMENTE</div><h1>Wahrheit oder<br>Intim?</h1><p>Fügt eure Mitspielenden mit Namen und Geschlecht hinzu. Das Spiel lost aus, wer an der Reihe ist, und zeigt die passende Anrede. Für erwachsene Paare, die sich näherkommen und offen miteinander sein möchten.</p></section>
 <section class="panel setup" id="setup">
 <div class="grid">
-<div class="field"><label for="who">WER IST AN DER REIHE?</label><select id="who"><option value="Zufällig">Zufällig</option><option value="Er">Er</option><option value="Sie">Sie</option><option value="Beide">Beide zusammen</option></select></div>
+<div class="field"><label for="playerName">SPIELER HINZUFÜGEN</label><input id="playerName" placeholder="Name eingeben" maxlength="24" style="width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:14px;border-radius:13px"></div>
+<div class="field"><label for="playerGender">GESCHLECHT</label><select id="playerGender"><option value="m">Männlich</option><option value="f">Weiblich</option><option value="x">Divers</option><option value="n">Keine Angabe</option></select></div>
+<div class="field" style="grid-column:1/-1"><button class="secondary" type="button" id="addPlayer" style="width:100%">＋ Spieler hinzufügen</button><div id="playerList" class="note" style="margin-top:10px">Noch keine Spieler hinzugefügt.</div></div>
 <div class="field"><label for="mode">SPIELMODUS</label><select id="mode"><option value="truth">Wahrheit</option><option value="intimate">Intim-Challenge</option><option value="mix">Zufall: Wahrheit oder intim</option></select></div>
 <div class="field"><label for="levelSelect">START-LEVEL</label><select id="levelSelect"><option value="1">1 · Locker</option><option value="2">2 · Flirty</option><option value="3">3 · Nähe</option><option value="4">4 · Mutig</option><option value="5">5 · Maximum</option></select></div>
 </div>
-<label class="checkrow"><input id="adult" type="checkbox"><span>Wir sind beide mindestens 18 Jahre alt und möchten dieses Spiel freiwillig spielen. Wir respektieren jederzeit ein Nein, eine Pause oder das Überspringen einer Aufgabe.</span></label>
+<label class="checkrow"><input id="adult" type="checkbox"><span>Alle Mitspielenden sind mindestens 18 Jahre alt und möchten dieses Spiel freiwillig spielen. Wir respektieren jederzeit ein Nein, eine Pause oder das Überspringen einer Aufgabe.</span></label>
 <button class="primary" style="width:100%" id="start">Spiel starten <span aria-hidden="true">→</span></button>
 <div class="safety">Regel Nummer 1: Einverständnis geht vor. Jede Person darf jederzeit ohne Begründung „Nein“, „Pause“ oder „Weiter“ sagen. Nichts muss ausgezogen, berührt oder getan werden.</div>
 </section>
@@ -183,9 +185,40 @@ const intimateTasks = [
 ].map(([l,c,s,t])=>({l,c,s,t,kind:"intimate"}));
 tasks.forEach(x=>x.kind=["Frage","Wunsch","Vertrauen","Fantasie"].includes(x.c)?"truth":"intimate");
 tasks.push(...truthTasks,...intimateTasks);
-const $=id=>document.getElementById(id);let level=1,played=0,last=null,history=[];
+const $=id=>document.getElementById(id);
+let level=1,played=0,last=null,history=[],players=[];
+function renderPlayers(){
+  $("playerList").innerHTML=players.length?players.map((p,i)=>'<span style="display:inline-flex;align-items:center;gap:6px;background:#302338;border:1px solid var(--line);border-radius:99px;padding:7px 10px;margin:3px">'+escapeHtml(p.name)+' · '+p.label+' <button type="button" data-remove="'+i+'" aria-label="Spieler entfernen" style="padding:2px 6px;background:transparent;color:#ff9cba">×</button></span>').join(""):'Noch keine Spieler hinzugefügt.';
+  $("playerList").querySelectorAll("[data-remove]").forEach(b=>b.addEventListener("click",()=>{players.splice(+b.dataset.remove,1);renderPlayers()}));
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
+$("addPlayer").addEventListener("click",()=>{
+  const name=$("playerName").value.trim(),gender=$("playerGender").value;
+  if(!name){alert("Bitte gib einen Spielernamen ein.");return}
+  if(players.some(p=>p.name.toLowerCase()===name.toLowerCase())){alert("Diesen Namen gibt es bereits.");return}
+  const labels={m:"Männlich",f:"Weiblich",x:"Divers",n:"Keine Angabe"};
+  players.push({name,gender,label:labels[gender]});$("playerName").value="";renderPlayers();
+});
 function setLevel(n){level=n;document.querySelectorAll(".level").forEach(b=>b.classList.toggle("active",+b.dataset.level===n))}
-function draw(){const who=$("who").value;const mode=$("mode").value;const pool=tasks.filter(x=>x.l===level && (mode==="mix"||x.kind===mode) && x!==last);const item=pool[Math.floor(Math.random()*pool.length)];last=item;played++;history.unshift(item.t);if(history.length>5)history.pop();$("symbol").textContent=item.s;$("category").textContent=(item.kind==="truth"?"WAHRHEIT · ":"INTIM-CHALLENGE · ")+item.c.toUpperCase();$("task").textContent=item.t;$("target").textContent="Für: "+(who==="Zufällig"?(Math.random()<.5?"Er":"Sie"):who);$("turn").textContent=(mode==="truth"?"WAHRHEIT":mode==="intimate"?"INTIM-CHALLENGE":"WAHRHEIT ODER INTIM")+" · LEVEL "+level+" · RUNDE "+played;$("counter").textContent=played+" Aufgaben gespielt";$("historyPanel").style.display="block";$("history").textContent=history.join(" · ")}
-function showGame(){if(!$("adult").checked){alert("Bitte bestätigt zuerst, dass ihr beide mindestens 18 seid und freiwillig mitspielt.");return}level=+$("levelSelect").value;$("setup").classList.add("hide");$("game").classList.add("show");$("levels").innerHTML=[1,2,3,4,5].map(n=>'<button class="level" data-level="'+n+'">'+n+' · '+["Locker","Flirty","Nähe","Mutig","Maximum"][n-1]+'</button>').join("");document.querySelectorAll(".level").forEach(b=>b.addEventListener("click",()=>{setLevel(+b.dataset.level);last=null;draw()}));setLevel(level);draw()}
+function draw(){
+ const mode=$("mode").value;
+ const pool=tasks.filter(x=>x.l===level&&(mode==="mix"||x.kind===mode)&&x!==last);
+ if(!pool.length){$("task").textContent="Für dieses Level gibt es keine passende Karte.";return}
+ const item=pool[Math.floor(Math.random()*pool.length)];last=item;played++;
+ const player=players.length?players[Math.floor(Math.random()*players.length)]:null;
+ const partner=players.length>1?players.find(p=>p!==player):null;
+ const pronoun=player?({m:"er",f:"sie",x:"sie",n:"die Person"}[player.gender]):"du";
+ let prompt=item.t;
+ if(player){
+   prompt=prompt.replace(/deinem Gegenüber/gi,player.name).replace(/eurem Gegenüber/gi,player.name).replace(/du\b/gi,player.name);
+   $("target").textContent="Am Zug: "+player.name+" ("+player.label+")"+(partner?" · Gegenüber: "+partner.name:"");
+ }else{$("target").textContent="Für: alle Mitspielenden";}
+ prompt=prompt.replace(/\{name\}/g,player?player.name:"euch").replace(/\{pronomen\}/g,pronoun);
+ $("symbol").textContent=item.s;$("category").textContent=(item.kind==="truth"?"WAHRHEIT · ":"INTIM-CHALLENGE · ")+item.c.toUpperCase();
+ $("task").textContent=prompt;history.unshift((player?player.name+": ":"")+prompt);if(history.length>5)history.pop();
+ $("turn").textContent=(mode==="truth"?"WAHRHEIT":mode==="intimate"?"INTIM-CHALLENGE":"WAHRHEIT ODER INTIM")+" · LEVEL "+level+" · RUNDE "+played;
+ $("counter").textContent=played+" Aufgaben gespielt";$("historyPanel").style.display="block";$("history").textContent=history.join(" · ");
+}
+function showGame(){if(!$("adult").checked){alert("Bitte bestätigt zuerst, dass ihr alle mindestens 18 seid und freiwillig mitspielt.");return}if(players.length===0){alert("Bitte fügt mindestens einen Spieler hinzu.");return}level=+$("levelSelect").value;$("setup").classList.add("hide");$("game").classList.add("show");$("levels").innerHTML=[1,2,3,4,5].map(n=>'<button class="level" data-level="'+n+'">'+n+' · '+["Locker","Flirty","Nähe","Mutig","Maximum"][n-1]+'</button>').join("");document.querySelectorAll(".level").forEach(b=>b.addEventListener("click",()=>{setLevel(+b.dataset.level);last=null;draw()}));setLevel(level);draw()}
 $("start").addEventListener("click",showGame);$("draw").addEventListener("click",draw);$("skip").addEventListener("click",draw);$("pause").addEventListener("click",()=>{if(confirm("Spiel wirklich beenden und zur Auswahl zurückkehren?")){$("game").classList.remove("show");$("setup").classList.remove("hide");$("historyPanel").style.display="none";played=0;history=[];last=null}});
 </script></body></html>
