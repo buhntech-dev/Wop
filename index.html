@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#120d18"><meta name="description" content="Ein spielerisches Date-Night-Challenge-Spiel für erwachsene Paare.">
+<title>WOP — Couple Challenge</title>
+<style>
+:root{--bg:#100c15;--panel:#1b1422;--panel2:#241a2c;--text:#fff8f5;--muted:#b9aab9;--pink:#ff6b9a;--gold:#f5c879;--line:#49334d;--green:#8be0b0}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 15% 0%,#44203b 0,transparent 38%),radial-gradient(ellipse at 90% 30%,#29203d 0,transparent 36%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button,select,input{font:inherit}button{cursor:pointer;border:0;border-radius:14px;padding:13px 18px;font-weight:750;transition:.18s}button:hover{transform:translateY(-1px);filter:brightness(1.08)}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wrap{max-width:980px;margin:auto;padding:24px 18px 54px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:38px}.brand{font-weight:950;letter-spacing:.18em;font-size:14px}.brand span{color:var(--pink)}.tag{color:var(--muted);font-size:12px;border:1px solid var(--line);border-radius:99px;padding:8px 12px}
+.hero{text-align:center;margin:0 auto 28px;max-width:700px}.eyebrow{color:var(--gold);font-size:12px;letter-spacing:.2em;font-weight:850}.hero h1{font-size:clamp(38px,8vw,70px);line-height:.98;margin:14px 0;background:linear-gradient(100deg,#fff8f5 15%,#ff9cba 60%,#f5c879);background-clip:text;color:transparent}.hero p{color:var(--muted);line-height:1.6;margin:0 auto;max-width:540px}
+.panel{background:linear-gradient(145deg,#211827f2,#17121cf5);border:1px solid var(--line);border-radius:24px;padding:clamp(18px,4vw,30px);box-shadow:0 20px 70px #0005;margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field label{display:block;font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.08em;margin:0 0 8px}.field select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:14px;border-radius:13px}
+.checkrow{display:flex;gap:12px;align-items:flex-start;color:var(--muted);font-size:13px;line-height:1.5;margin:18px 0}.checkrow input{accent-color:var(--pink);width:18px;height:18px;flex:none;margin-top:1px}
+.primary{background:linear-gradient(100deg,#ff5e91,#d94d8c);color:white;box-shadow:0 8px 26px #ff5e9133}.secondary{background:#302338;color:var(--text);border:1px solid var(--line)}.quiet{background:transparent;color:var(--muted);border:1px solid var(--line)}.actions{display:flex;gap:10px;flex-wrap:wrap}.actions button{flex:1}
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:18px 0}.level{border:1px solid var(--line);background:#211827;color:var(--muted);padding:10px 4px;border-radius:12px;font-size:12px}.level.active{background:#51283f;border-color:var(--pink);color:white}
+.game{display:none}.game.show{display:block}.setup.hide{display:none}.status{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;gap:12px}.challenge{min-height:250px;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:28px 10px}.challenge .symbol{font-size:42px}.challenge h2{font-size:clamp(24px,5vw,38px);line-height:1.18;margin:15px auto;max-width:650px}.challenge p{color:var(--muted);margin:0}.chip{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:7px 12px;color:var(--gold);font-size:11px;font-weight:800;letter-spacing:.1em}
+.note{font-size:12px;color:var(--muted);line-height:1.6}.safety{border-left:3px solid var(--green);padding:10px 13px;background:#17302555;border-radius:0 10px 10px 0;color:#ccebd8;font-size:12px;line-height:1.55;margin-top:16px}
+.footer{text-align:center;color:#8f8190;font-size:11px;margin-top:30px}.history{font-size:12px;color:var(--muted);line-height:1.7}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.top{margin-bottom:26px}.tag{font-size:10px}.levels{gap:5px}.level{font-size:10px;padding:9px 2px}.actions{display:grid;grid-template-columns:1fr 1fr}.actions button:last-child{grid-column:1/-1}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="top"><div class="brand">W<span>O</span>P <span style="color:#fff8f5;letter-spacing:.06em">/ COUPLE CHALLENGE</span></div><div class="tag">18+ · NUR MIT EINVERSTÄNDNIS</div></header>
+<section class="hero"><div class="eyebrow">EURE DATE NIGHT · NEUE MOMENTE</div><h1>Traut euch,<br>näher zu sein.</h1><p>Ein spielerisches Challenge-Spiel für erwachsene Paare. Wählt euer Level, zieht eine Aufgabe und macht euren Abend zu eurem eigenen Erlebnis.</p></section>
+<section class="panel setup" id="setup">
+<div class="grid">
+<div class="field"><label for="who">WER IST AN DER REIHE?</label><select id="who"><option value="Zufällig">Zufällig</option><option value="Er">Er</option><option value="Sie">Sie</option><option value="Beide">Beide zusammen</option></select></div>
+<div class="field"><label for="levelSelect">START-LEVEL</label><select id="levelSelect"><option value="1">1 · Locker</option><option value="2">2 · Flirty</option><option value="3">3 · Nähe</option><option value="4">4 · Mutig</option><option value="5">5 · Intensiv</option></select></div>
+</div>
+<label class="checkrow"><input id="adult" type="checkbox"><span>Wir sind beide mindestens 18 Jahre alt und möchten dieses Spiel freiwillig spielen. Wir respektieren jederzeit ein Nein, eine Pause oder das Überspringen einer Aufgabe.</span></label>
+<button class="primary" style="width:100%" id="start">Spiel starten <span aria-hidden="true">→</span></button>
+<div class="safety">Regel Nummer 1: Einverständnis geht vor. Jede Person darf jederzeit ohne Begründung „Nein“, „Pause“ oder „Weiter“ sagen. Nichts muss ausgezogen, berührt oder getan werden.</div>
+</section>
+<section class="panel game" id="game">
+<div class="status"><span id="turn">RUNDE 1</span><span id="counter">0 Aufgaben gespielt</span></div>
+<div class="levels" id="levels"></div>
+<div class="challenge"><div class="symbol" id="symbol">✦</div><div><span class="chip" id="category">AUFGABE</span></div><h2 id="task">Drückt auf „Zufällige Aufgabe“.</h2><p id="target">Für: Zufällig</p></div>
+<div class="actions"><button class="primary" id="draw">Zufällige Aufgabe</button><button class="secondary" id="skip">Überspringen</button><button class="quiet" id="pause">Pause / Beenden</button></div>
+<div class="safety">Check-in: Fragt kurz nach, ob sich beide wohlfühlen. Ein „Nein“ wird ohne Diskussion akzeptiert.</div>
+</section>
+<section class="panel" id="historyPanel" style="display:none"><strong>Zuletzt gespielt</strong><div class="history" id="history"></div></section>
+<div class="footer">WOP · Für erwachsene Paare · Spielt achtsam und in eurem Tempo.</div>
+</main>
+<script>
+const tasks = [
+{l:1,c:"Kennenlernen",s:"💬",t:"Nennt jeweils drei Dinge, die ihr am anderen besonders mögt."},
+{l:1,c:"Kennenlernen",s:"✨",t:"Erzählt von eurem schönsten gemeinsamen Moment."},
+{l:1,c:"Kompliment",s:"💗",t:"Macht eurem Gegenüber ein ehrliches Kompliment."},
+{l:1,c:"Blickkontakt",s:"👀",t:"Haltet 20 Sekunden Blickkontakt – ohne zu lachen."},
+{l:1,c:"Humor",s:"😄",t:"Stellt euer erstes Date in 30 Sekunden nach."},
+{l:1,c:"Nähe",s:"🤝",t:"Haltet für eine Minute Händchen."},
+{l:1,c:"Musik",s:"🎵",t:"Wählt ein Lied, das zu eurer Beziehung passt, und erklärt warum."},
+{l:1,c:"Frage",s:"💭",t:"Was wolltet ihr schon immer einmal zusammen ausprobieren?"},
+{l:1,c:"Kompliment",s:"🌹",t:"Beschreibt, was euch am Lächeln des anderen gefällt."},
+{l:1,c:"Kleine Geste",s:"🫶",t:"Gebt euch eine Umarmung – nur wenn beide möchten."},
+{l:1,c:"Kreativ",s:"✍️",t:"Erfindet einen geheimen Kosenamen füreinander."},
+{l:1,c:"Frage",s:"🌙",t:"Plant spontan euren perfekten gemeinsamen Abend."},
+{l:2,c:"Flirt",s:"😉",t:"Flüstert eurem Gegenüber einen charmanten Satz ins Ohr."},
+{l:2,c:"Kompliment",s:"🔥",t:"Nennt eine Eigenschaft, die ihr besonders anziehend findet."},
+{l:2,c:"Nähe",s:"💞",t:"Setzt euch näher zusammen und bleibt eine Minute so."},
+{l:2,c:"Kuss",s:"💋",t:"Fragt nach einem Kuss auf die Wange oder die Hand."},
+{l:2,c:"Blickkontakt",s:"👁️",t:"Schaut euch 30 Sekunden an und sagt danach, was ihr gedacht habt."},
+{l:2,c:"Frage",s:"💌",t:"Was war euer bisher schönster Flirt-Moment?"},
+{l:2,c:"Tanz",s:"🎶",t:"Tanzt eine Minute langsam zusammen."},
+{l:2,c:"Mut",s:"🌶️",t:"Macht eine besonders mutige, aber respektvolle Liebeserklärung."},
+{l:2,c:"Berührung",s:"🫳",t:"Fragt, ob eine kurze Hand- oder Schultermassage angenehm wäre."},
+{l:2,c:"Fantasie",s:"🌠",t:"Beschreibt euer ideales romantisches Wochenende."},
+{l:2,c:"Kuss",s:"💗",t:"Fragt, ob ihr euch küssen möchtet – ein Nein ist völlig okay."},
+{l:2,c:"Spiel",s:"🎲",t:"Lasst euer Gegenüber eine harmlose Flirt-Frage auswählen."},
+{l:3,c:"Vertrauen",s:"🫶",t:"Nennt eine Sache, bei der ihr euch vom anderen besonders verstanden fühlt."},
+{l:3,c:"Nähe",s:"🤍",t:"Gebt euch eine längere Umarmung, wenn beide zustimmen."},
+{l:3,c:"Massage",s:"🌿",t:"Bietet eine zweiminütige Schulter- oder Handmassage an."},
+{l:3,c:"Romantik",s:"🕯️",t:"Sagt euch abwechselnd, worauf ihr euch in eurer gemeinsamen Zukunft freut."},
+{l:3,c:"Frage",s:"💬",t:"Welche kleine Berührung findet ihr besonders angenehm? Fragt nach Grenzen."},
+{l:3,c:"Kreativ",s:"💌",t:"Schreibt eine kurze Nachricht, die der andere später lesen darf."},
+{l:3,c:"Blickkontakt",s:"✨",t:"Haltet euch an den Händen und sagt, was ihr gerade fühlt."},
+{l:3,c:"Nähe",s:"🛋️",t:"Kuschelt für zwei Minuten – nur wenn beide Lust darauf haben."},
+{l:3,c:"Vertrauen",s:"🔐",t:"Teilt einen Wunsch für eure Beziehung, den ihr bisher selten ausgesprochen habt."},
+{l:3,c:"Romantik",s:"🌹",t:"Macht einander eine kleine, persönliche Liebeserklärung."},
+{l:3,c:"Frage",s:"🌙",t:"Was hilft euch, euch sicher und geborgen zu fühlen?"},
+{l:3,c:"Überraschung",s:"🎁",t:"Plant eine kleine Überraschung, die ihr in den nächsten Tagen umsetzt."},
+{l:4,c:"Mut",s:"🔥",t:"Wählt ein Kleidungsstück oder Accessoire, das ihr für den Abend spielerisch ablegen oder tauschen möchtet – nur mit beidseitigem Ja."},
+{l:4,c:"Flirt",s:"😉",t:"Macht eurem Gegenüber eine selbstbewusste, aber respektvolle Ansage."},
+{l:4,c:"Nähe",s:"💞",t:"Fragt, ob ihr euch für eine Minute eng umarmen möchtet."},
+{l:4,c:"Wunsch",s:"💭",t:"Nennt eine romantische Sache, die ihr gern gemeinsam ausprobieren würdet."},
+{l:4,c:"Mut",s:"🌶️",t:"Wählt gemeinsam eine persönliche Grenze, die heute ausdrücklich respektiert wird."},
+{l:4,c:"Kreativ",s:"🎭",t:"Spielt eine Szene aus eurem ersten Kennenlernen nach – mit extra Charme."},
+{l:4,c:"Kompliment",s:"💗",t:"Beschreibt, wann ihr euch vom anderen besonders begehrt oder geschätzt fühlt."},
+{l:4,c:"Überraschung",s:"🎀",t:"Lasst den anderen eine kleine romantische Geste für euch aussuchen."},
+{l:4,c:"Frage",s:"🗝️",t:"Welche Art von Zärtlichkeit mögt ihr – und welche lieber nicht?"},
+{l:4,c:"Tanz",s:"🎵",t:"Macht einen langsamen Tanz ohne Musik."},
+{l:4,c:"Mut",s:"✨",t:"Wählt gemeinsam eine neue, harmlose Date-Night-Regel für heute."},
+{l:4,c:"Nähe",s:"🤍",t:"Fragt, ob ihr euch einen Moment ganz nah gegenübersetzen möchtet."},
+{l:5,c:"Vertrauen",s:"🔐",t:"Sprecht offen darüber, was sich für euch heute gut und sicher anfühlt."},
+{l:5,c:"Wunsch",s:"🌹",t:"Teilt einen romantischen Wunsch und hört einander ohne Bewertung zu."},
+{l:5,c:"Mut",s:"🔥",t:"Wählt gemeinsam eine sinnliche, nicht explizite Atmosphäre: Musik, Licht oder Outfit."},
+{l:5,c:"Nähe",s:"💞",t:"Fragt, ob ihr euch gegenseitig eine kleine, angenehme Massage geben möchtet."},
+{l:5,c:"Kreativ",s:"🎁",t:"Überrascht euch mit einer selbst ausgedachten romantischen Challenge."},
+{l:5,c:"Frage",s:"💬",t:"Was bedeutet für euch echte Intimität – unabhängig von körperlicher Nähe?"},
+{l:5,c:"Mut",s:"✨",t:"Wählt ein Outfit-Detail, das ihr tauschen oder ablegen möchtet. Es gibt keine Pflicht, etwas auszuziehen."},
+{l:5,c:"Romantik",s:"🕯️",t:"Gestaltet zusammen fünf Minuten nur für euch: Licht dimmen, Musik wählen und Handy weglegen."},
+{l:5,c:"Vertrauen",s:"🤍",t:"Sagt einander eine Grenze und einen Wunsch für den restlichen Abend."},
+{l:5,c:"Nähe",s:"🫶",t:"Fragt, ob ihr euch einen Kuss geben möchtet, und respektiert die Antwort."},
+{l:5,c:"Abschluss",s:"🌙",t:"Jede Person sagt, was sich heute besonders schön angefühlt hat."},
+{l:5,c:"Abschluss",s:"💗",t:"Entscheidet gemeinsam, ob ihr weiterspielen, pausieren oder den Abend gemütlich ausklingen lassen möchtet."}
+];
+const $=id=>document.getElementById(id);let level=1,played=0,last=null,history=[];
+function setLevel(n){level=n;document.querySelectorAll(".level").forEach(b=>b.classList.toggle("active",+b.dataset.level===n))}
+function draw(){const who=$("who").value;const pool=tasks.filter(x=>x.l===level && x!==last);const item=pool[Math.floor(Math.random()*pool.length)];last=item;played++;history.unshift(item.t);if(history.length>5)history.pop();$("symbol").textContent=item.s;$("category").textContent=item.c.toUpperCase();$("task").textContent=item.t;$("target").textContent="Für: "+(who==="Zufällig"?(Math.random()<.5?"Er":"Sie"):who);$("turn").textContent="LEVEL "+level+" · RUNDE "+played;$("counter").textContent=played+" Aufgaben gespielt";$("historyPanel").style.display="block";$("history").textContent=history.join(" · ")}
+function showGame(){if(!$("adult").checked){alert("Bitte bestätigt zuerst, dass ihr beide mindestens 18 seid und freiwillig mitspielt.");return}level=+$("levelSelect").value;$("setup").classList.add("hide");$("game").classList.add("show");$("levels").innerHTML=[1,2,3,4,5].map(n=>'<button class="level" data-level="'+n+'">'+n+' · '+["Locker","Flirty","Nähe","Mutig","Intensiv"][n-1]+'</button>').join("");document.querySelectorAll(".level").forEach(b=>b.addEventListener("click",()=>{setLevel(+b.dataset.level);last=null;draw()}));setLevel(level);draw()}
+$("start").addEventListener("click",showGame);$("draw").addEventListener("click",draw);$("skip").addEventListener("click",draw);$("pause").addEventListener("click",()=>{if(confirm("Spiel wirklich beenden und zur Auswahl zurückkehren?")){$("game").classList.remove("show");$("setup").classList.remove("hide");$("historyPanel").style.display="none";played=0;history=[];last=null}});
+</script></body></html>
