@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#120d18"><meta name="description" content="Ein spielerisches Date-Night-Challenge-Spiel für erwachsene Paare.">
-<title>WOP — Couple Challenge</title>
+<title>WOP — After Dark Couple Challenge</title>
 <style>
 :root{--bg:#100c15;--panel:#1b1422;--panel2:#241a2c;--text:#fff8f5;--muted:#b9aab9;--pink:#ff6b9a;--gold:#f5c879;--line:#49334d;--green:#8be0b0}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 15% 0%,#44203b 0,transparent 38%),radial-gradient(ellipse at 90% 30%,#29203d 0,transparent 36%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
@@ -22,12 +22,12 @@ button,select,input{font:inherit}button{cursor:pointer;border:0;border-radius:14
 </style>
 </head>
 <body><main class="wrap">
-<header class="top"><div class="brand">W<span>O</span>P <span style="color:#fff8f5;letter-spacing:.06em">/ COUPLE CHALLENGE</span></div><div class="tag">18+ · NUR MIT EINVERSTÄNDNIS</div></header>
-<section class="hero"><div class="eyebrow">EURE DATE NIGHT · NEUE MOMENTE</div><h1>Traut euch,<br>näher zu sein.</h1><p>Ein spielerisches Challenge-Spiel für erwachsene Paare. Wählt euer Level, zieht eine Aufgabe und macht euren Abend zu eurem eigenen Erlebnis.</p></section>
+<header class="top"><div class="brand">W<span>O</span>P <span style="color:#fff8f5;letter-spacing:.06em">/ COUPLE CHALLENGE</span></div><div class="tag">18+ · MUTIG, ABER FREIWILLIG</div></header>
+<section class="hero"><div class="eyebrow">EURE DATE NIGHT · NEUE MOMENTE</div><h1>Mehr Spannung.<br>Mehr Nähe.</h1><p>Die mutigere Date-Night für Erwachsene: freche Fragen, intensive Nähe und sinnliche Challenges. Ihr bestimmt das Tempo – und eure Grenzen gelten immer.</p></section>
 <section class="panel setup" id="setup">
 <div class="grid">
 <div class="field"><label for="who">WER IST AN DER REIHE?</label><select id="who"><option value="Zufällig">Zufällig</option><option value="Er">Er</option><option value="Sie">Sie</option><option value="Beide">Beide zusammen</option></select></div>
-<div class="field"><label for="levelSelect">START-LEVEL</label><select id="levelSelect"><option value="1">1 · Locker</option><option value="2">2 · Flirty</option><option value="3">3 · Nähe</option><option value="4">4 · Mutig</option><option value="5">5 · Intensiv</option></select></div>
+<div class="field"><label for="levelSelect">START-LEVEL</label><select id="levelSelect"><option value="1">1 · Locker</option><option value="2">2 · Flirty</option><option value="3">3 · Nähe</option><option value="4">4 · Mutig</option><option value="5">5 · Maximum</option></select></div>
 </div>
 <label class="checkrow"><input id="adult" type="checkbox"><span>Wir sind beide mindestens 18 Jahre alt und möchten dieses Spiel freiwillig spielen. Wir respektieren jederzeit ein Nein, eine Pause oder das Überspringen einer Aufgabe.</span></label>
 <button class="primary" style="width:100%" id="start">Spiel starten <span aria-hidden="true">→</span></button>
@@ -41,7 +41,7 @@ button,select,input{font:inherit}button{cursor:pointer;border:0;border-radius:14
 <div class="safety">Check-in: Fragt kurz nach, ob sich beide wohlfühlen. Ein „Nein“ wird ohne Diskussion akzeptiert.</div>
 </section>
 <section class="panel" id="historyPanel" style="display:none"><strong>Zuletzt gespielt</strong><div class="history" id="history"></div></section>
-<div class="footer">WOP · Für erwachsene Paare · Spielt achtsam und in eurem Tempo.</div>
+<div class="footer">WOP AFTER DARK · 18+ · Einvernehmlich, freiwillig und in eurem Tempo.</div>
 </main>
 <script>
 const tasks = [
@@ -105,10 +105,33 @@ const tasks = [
 {l:5,c:"Nähe",s:"🫶",t:"Fragt, ob ihr euch einen Kuss geben möchtet, und respektiert die Antwort."},
 {l:5,c:"Abschluss",s:"🌙",t:"Jede Person sagt, was sich heute besonders schön angefühlt hat."},
 {l:5,c:"Abschluss",s:"💗",t:"Entscheidet gemeinsam, ob ihr weiterspielen, pausieren oder den Abend gemütlich ausklingen lassen möchtet."}
+
+{l:4,c:"Mutprobe",s:"🔥",t:"Fragt einander, ob ihr für diese Runde eine besonders lange Kuschel- oder Kuss-Challenge möchtet. Legt vorher fest, was angenehm ist."},
+{l:4,c:"Sinnlichkeit",s:"🕯️",t:"Eine Person gestaltet für die andere eine sinnliche Atmosphäre mit Musik und Licht. Die andere darf jederzeit Änderungswünsche nennen."},
+{l:4,c:"Wunsch",s:"💌",t:"Verratet einander einen geheimen romantischen Wunsch, den ihr euch nur mit gegenseitigem Ja erfüllen möchtet."},
+{l:4,c:"Kuss",s:"💋",t:"Fragt nach einem längeren Kuss. Entscheidet gemeinsam über Dauer und Art."},
+{l:4,c:"Vertrauen",s:"🔐",t:"Sprecht darüber, welche Berührungen ihr mögt und welche heute tabu sind."},
+{l:4,c:"Flirt",s:"😉",t:"Macht eurem Gegenüber 30 Sekunden lang eindeutige, aber respektvolle Komplimente."},
+{l:4,c:"Nähe",s:"🤍",t:"Setzt euch gegenüber, nehmt euch an den Händen und sagt, was ihr gerade voneinander möchtet – ohne Erwartungsdruck."},
+{l:4,c:"Überraschung",s:"🎀",t:"Eine Person darf eine romantische Aufgabe aus Level 1 bis 3 auswählen, die andere darf annehmen oder tauschen."},
+{l:4,c:"Fantasie",s:"🌙",t:"Beschreibt ein gemeinsames Traum-Date für Erwachsene – romantisch, aufregend und mit klaren Grenzen."},
+{l:4,c:"Mut",s:"🌶️",t:"Jede Person nennt eine Sache, die sie heute ausprobieren würde, und eine Sache, die ausgeschlossen bleibt."},
+{l:5,c:"Intensiv",s:"🔥",t:"Fragt ausdrücklich, ob ihr die Stimmung mit einem leidenschaftlichen Kuss intensivieren möchtet. Ein Nein beendet nur diese Aufgabe."},
+{l:5,c:"Wunsch",s:"💗",t:"Jede Person nennt ihren schönsten Wunsch für einen intimen Abend. Die andere hört zu und verspricht nichts, was sie nicht möchte."},
+{l:5,c:"Sinnlichkeit",s:"🕯️",t:"Gestaltet gemeinsam eine private Wohlfühlatmosphäre und vereinbart ein klares Stoppsignal."},
+{l:5,c:"Vertrauen",s:"🔐",t:"Macht einen kurzen Check-in: Was ist heute willkommen, was vielleicht, und was definitiv nicht?"},
+{l:5,c:"Kuss",s:"💋",t:"Fragt, ob ihr euch gegenseitig leidenschaftlich küssen möchtet. Ihr bestimmt gemeinsam das Tempo."},
+{l:5,c:"Mut",s:"🌶️",t:"Wählt gemeinsam eine sinnliche Challenge aus, die für beide eindeutig angenehm ist. Ihr dürft sie jederzeit verändern."},
+{l:5,c:"Nähe",s:"🤍",t:"Fragt, ob ihr euch eng aneinanderkuscheln möchtet und welche Berührungen sich gut anfühlen."},
+{l:5,c:"Fantasie",s:"🌙",t:"Erzählt euch von einer Fantasie, die ihr teilen möchtet – ohne Details nennen zu müssen und ohne Umsetzungsdruck."},
+{l:5,c:"Intensiv",s:"✨",t:"Entscheidet gemeinsam, ob ihr den Abend mit einvernehmlicher Intimität fortsetzen möchtet. Sprecht vorher über Grenzen und Schutz."},
+{l:5,c:"Vertrauen",s:"🫶",t:"Jede Person darf eine Grenze, einen Wunsch und ein Stoppsignal festlegen. Wiederholt die Absprachen füreinander."},
+{l:5,c:"Abschluss",s:"🌹",t:"Wählt gemeinsam: noch eine Challenge, eine Pause, Kuscheln oder den Abend beenden. Alle Antworten sind gleich gut."},
+{l:5,c:"Abschluss",s:"💞",t:"Fragt einander, ob ihr euch gerade Nähe wünscht. Respektiert ein Nein sofort und liebevoll."}
 ];
 const $=id=>document.getElementById(id);let level=1,played=0,last=null,history=[];
 function setLevel(n){level=n;document.querySelectorAll(".level").forEach(b=>b.classList.toggle("active",+b.dataset.level===n))}
 function draw(){const who=$("who").value;const pool=tasks.filter(x=>x.l===level && x!==last);const item=pool[Math.floor(Math.random()*pool.length)];last=item;played++;history.unshift(item.t);if(history.length>5)history.pop();$("symbol").textContent=item.s;$("category").textContent=item.c.toUpperCase();$("task").textContent=item.t;$("target").textContent="Für: "+(who==="Zufällig"?(Math.random()<.5?"Er":"Sie"):who);$("turn").textContent="LEVEL "+level+" · RUNDE "+played;$("counter").textContent=played+" Aufgaben gespielt";$("historyPanel").style.display="block";$("history").textContent=history.join(" · ")}
-function showGame(){if(!$("adult").checked){alert("Bitte bestätigt zuerst, dass ihr beide mindestens 18 seid und freiwillig mitspielt.");return}level=+$("levelSelect").value;$("setup").classList.add("hide");$("game").classList.add("show");$("levels").innerHTML=[1,2,3,4,5].map(n=>'<button class="level" data-level="'+n+'">'+n+' · '+["Locker","Flirty","Nähe","Mutig","Intensiv"][n-1]+'</button>').join("");document.querySelectorAll(".level").forEach(b=>b.addEventListener("click",()=>{setLevel(+b.dataset.level);last=null;draw()}));setLevel(level);draw()}
+function showGame(){if(!$("adult").checked){alert("Bitte bestätigt zuerst, dass ihr beide mindestens 18 seid und freiwillig mitspielt.");return}level=+$("levelSelect").value;$("setup").classList.add("hide");$("game").classList.add("show");$("levels").innerHTML=[1,2,3,4,5].map(n=>'<button class="level" data-level="'+n+'">'+n+' · '+["Locker","Flirty","Nähe","Mutig","Maximum"][n-1]+'</button>').join("");document.querySelectorAll(".level").forEach(b=>b.addEventListener("click",()=>{setLevel(+b.dataset.level);last=null;draw()}));setLevel(level);draw()}
 $("start").addEventListener("click",showGame);$("draw").addEventListener("click",draw);$("skip").addEventListener("click",draw);$("pause").addEventListener("click",()=>{if(confirm("Spiel wirklich beenden und zur Auswahl zurückkehren?")){$("game").classList.remove("show");$("setup").classList.remove("hide");$("historyPanel").style.display="none";played=0;history=[];last=null}});
 </script></body></html>
