@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#120d18"><meta name="description" content="Ein spielerisches Date-Night-Challenge-Spiel für erwachsene Paare.">
-<title>WOP — After Dark Couple Challenge</title>
+<title>WOP — Wahrheit oder Intim</title>
 <style>
 :root{--bg:#100c15;--panel:#1b1422;--panel2:#241a2c;--text:#fff8f5;--muted:#b9aab9;--pink:#ff6b9a;--gold:#f5c879;--line:#49334d;--green:#8be0b0}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 15% 0%,#44203b 0,transparent 38%),radial-gradient(ellipse at 90% 30%,#29203d 0,transparent 36%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
@@ -23,10 +23,11 @@ button,select,input{font:inherit}button{cursor:pointer;border:0;border-radius:14
 </head>
 <body><main class="wrap">
 <header class="top"><div class="brand">W<span>O</span>P <span style="color:#fff8f5;letter-spacing:.06em">/ COUPLE CHALLENGE</span></div><div class="tag">18+ · MUTIG, ABER FREIWILLIG</div></header>
-<section class="hero"><div class="eyebrow">EURE DATE NIGHT · NEUE MOMENTE</div><h1>Mehr Spannung.<br>Mehr Nähe.</h1><p>Die mutigere Date-Night für Erwachsene: freche Fragen, intensive Nähe und sinnliche Challenges. Ihr bestimmt das Tempo – und eure Grenzen gelten immer.</p></section>
+<section class="hero"><div class="eyebrow">EURE DATE NIGHT · NEUE MOMENTE</div><h1>Wahrheit oder<br>Intim?</h1><p>Stellt euch ehrlichen Fragen oder wagt eine intime Challenge. Für erwachsene Paare, die sich näherkommen und offen miteinander sein möchten.</p></section>
 <section class="panel setup" id="setup">
 <div class="grid">
 <div class="field"><label for="who">WER IST AN DER REIHE?</label><select id="who"><option value="Zufällig">Zufällig</option><option value="Er">Er</option><option value="Sie">Sie</option><option value="Beide">Beide zusammen</option></select></div>
+<div class="field"><label for="mode">SPIELMODUS</label><select id="mode"><option value="truth">Wahrheit</option><option value="intimate">Intim-Challenge</option><option value="mix">Zufall: Wahrheit oder intim</option></select></div>
 <div class="field"><label for="levelSelect">START-LEVEL</label><select id="levelSelect"><option value="1">1 · Locker</option><option value="2">2 · Flirty</option><option value="3">3 · Nähe</option><option value="4">4 · Mutig</option><option value="5">5 · Maximum</option></select></div>
 </div>
 <label class="checkrow"><input id="adult" type="checkbox"><span>Wir sind beide mindestens 18 Jahre alt und möchten dieses Spiel freiwillig spielen. Wir respektieren jederzeit ein Nein, eine Pause oder das Überspringen einer Aufgabe.</span></label>
@@ -104,8 +105,7 @@ const tasks = [
 {l:5,c:"Vertrauen",s:"🤍",t:"Sagt einander eine Grenze und einen Wunsch für den restlichen Abend."},
 {l:5,c:"Nähe",s:"🫶",t:"Fragt, ob ihr euch einen Kuss geben möchtet, und respektiert die Antwort."},
 {l:5,c:"Abschluss",s:"🌙",t:"Jede Person sagt, was sich heute besonders schön angefühlt hat."},
-{l:5,c:"Abschluss",s:"💗",t:"Entscheidet gemeinsam, ob ihr weiterspielen, pausieren oder den Abend gemütlich ausklingen lassen möchtet."}
-
+{l:5,c:"Abschluss",s:"💗",t:"Entscheidet gemeinsam, ob ihr weiterspielen, pausieren oder den Abend gemütlich ausklingen lassen möchtet."},
 {l:4,c:"Mutprobe",s:"🔥",t:"Fragt einander, ob ihr für diese Runde eine besonders lange Kuschel- oder Kuss-Challenge möchtet. Legt vorher fest, was angenehm ist."},
 {l:4,c:"Sinnlichkeit",s:"🕯️",t:"Eine Person gestaltet für die andere eine sinnliche Atmosphäre mit Musik und Licht. Die andere darf jederzeit Änderungswünsche nennen."},
 {l:4,c:"Wunsch",s:"💌",t:"Verratet einander einen geheimen romantischen Wunsch, den ihr euch nur mit gegenseitigem Ja erfüllen möchtet."},
@@ -129,9 +129,63 @@ const tasks = [
 {l:5,c:"Abschluss",s:"🌹",t:"Wählt gemeinsam: noch eine Challenge, eine Pause, Kuscheln oder den Abend beenden. Alle Antworten sind gleich gut."},
 {l:5,c:"Abschluss",s:"💞",t:"Fragt einander, ob ihr euch gerade Nähe wünscht. Respektiert ein Nein sofort und liebevoll."}
 ];
+
+// Die Fragen und Challenges werden getrennt gezogen; Mix kombiniert beide Stapel.
+const truthTasks = [
+[1,"Ehrlich sein","💬","Was war dein erster Gedanke, als du mich kennengelernt hast?"],
+[1,"Ehrlich sein","💗","Was liebst du an unserer Beziehung am meisten?"],
+[1,"Geheimnis","🤫","Was hast du dich bisher nicht getraut, mich zu fragen?"],
+[1,"Erinnerung","🌙","Welcher gemeinsame Moment bringt dich sofort zum Lächeln?"],
+[1,"Gefühl","🫶","Wann fühlst du dich von mir besonders geliebt?"],
+[1,"Wunsch","✨","Was sollten wir viel öfter gemeinsam machen?"],
+[2,"Flirten","😉","Wann fandest du mich zuletzt besonders attraktiv?"],
+[2,"Ehrlich sein","💋","Was ist für dich der schönste Kuss-Moment?"],
+[2,"Wunsch","🌹","Welche romantische Überraschung würdest du dir wünschen?"],
+[2,"Geheimnis","🤫","Hast du schon einmal absichtlich mit mir geflirtet, um mich nervös zu machen?"],
+[2,"Anziehung","🔥","Welche meiner Eigenschaften findest du besonders anziehend?"],
+[2,"Fantasie","🌠","Wie sieht für dich ein perfekter Abend zu zweit aus?"],
+[3,"Vertrauen","🔐","Über welches Thema fällt es dir schwer, mit mir zu sprechen?"],
+[3,"Nähe","🤍","Welche Art von Zärtlichkeit magst du besonders?"],
+[3,"Wunsch","💌","Gibt es einen romantischen Wunsch, den du noch nicht ausgesprochen hast?"],
+[3,"Grenzen","🛑","Was ist eine Grenze, die ich immer respektieren soll?"],
+[3,"Ehrlich sein","💭","Wann fühlst du dich am meisten begehrt und wertgeschätzt?"],
+[3,"Fantasie","🌙","Welche gemeinsame Erfahrung würdest du gerne einmal planen?"],
+[4,"Mutige Frage","🌶️","Was wolltest du mich schon lange über Nähe oder Intimität fragen?"],
+[4,"Ehrlich sein","🔥","Was macht einen Kuss für dich unvergesslich?"],
+[4,"Wunsch","💗","Welche neue romantische Sache würdest du gerne mit mir ausprobieren?"],
+[4,"Vertrauen","🔐","Gibt es etwas, bei dem du dir mehr Initiative von mir wünschst?"],
+[4,"Grenzen","🫶","Was wäre dir wichtig, bevor wir eine neue intime Erfahrung ausprobieren?"],
+[4,"Fantasie","✨","Welche Atmosphäre macht einen Abend für dich besonders aufregend?"],
+[5,"Ganz ehrlich","❤️","Was bedeutet Intimität für dich – über Körperlichkeit hinaus?"],
+[5,"Mutige Frage","🔥","Gibt es eine Fantasie, über die du mit mir sprechen möchtest? Du musst keine Details nennen."],
+[5,"Wunsch","💌","Was wäre für dich ein perfekter, respektvoller und aufregender Abend zu zweit?"],
+[5,"Vertrauen","🔐","Was brauchst du, um dich bei körperlicher Nähe vollkommen sicher zu fühlen?"],
+[5,"Ehrlich sein","💬","Was möchtest du, dass ich in unserer Intimität besser verstehe?"],
+[5,"Grenzen","🛑","Welche Grenze oder welches Stoppsignal sollen wir für heute vereinbaren?"]
+].map(([l,c,s,t])=>({l,c,s,t,kind:"truth"}));
+const intimateTasks = [
+[1,"Zärtlichkeit","🤝","Haltet euch eine Minute an den Händen und schaut euch an."],
+[1,"Kompliment","🌹","Flüstere deinem Gegenüber ein ehrliches Kompliment zu."],
+[1,"Kuss","💋","Fragt einander, ob ein Kuss auf die Wange willkommen ist."],
+[2,"Flirt","😉","Flüstere einen charmanten Satz ins Ohr – wenn das angenehm ist."],
+[2,"Kuss","💗","Fragt nach einem Kuss und entscheidet gemeinsam, welcher sich gut anfühlt."],
+[2,"Nähe","🫶","Setzt euch ganz nah zusammen und bleibt eine Minute so."],
+[3,"Massage","🌿","Biete eine kurze Hand- oder Schultermassage an und frage nach Zustimmung."],
+[3,"Kuscheln","🤍","Kuschelt zwei Minuten, wenn ihr beide Lust darauf habt."],
+[3,"Blickkontakt","👀","Haltet 30 Sekunden Blickkontakt und lächelt euch an."],
+[4,"Sinnlichkeit","🕯️","Gestaltet gemeinsam eine sinnliche Atmosphäre mit Licht und Musik."],
+[4,"Mut","🔥","Fragt, ob ihr euch länger küssen möchtet. Legt gemeinsam das Tempo fest."],
+[4,"Nähe","💞","Eine Person darf eine angenehme, nicht intime Berührung vorschlagen; die andere entscheidet frei."],
+[5,"Intensiv","💋","Fragt, ob ihr euch leidenschaftlich küssen möchtet. Ein Nein ist vollkommen in Ordnung."],
+[5,"Sinnlichkeit","🌙","Wählt gemeinsam eine sinnliche Challenge, die für beide eindeutig angenehm ist."],
+[5,"Vertrauen","🔐","Sprecht kurz über Wünsche, Grenzen und ein klares Stoppsignal."],
+[5,"Intimität","✨","Entscheidet gemeinsam, ob ihr den Abend mit einvernehmlicher Intimität fortsetzen möchtet. Sprecht vorher über Grenzen und Schutz."]
+].map(([l,c,s,t])=>({l,c,s,t,kind:"intimate"}));
+tasks.forEach(x=>x.kind=["Frage","Wunsch","Vertrauen","Fantasie"].includes(x.c)?"truth":"intimate");
+tasks.push(...truthTasks,...intimateTasks);
 const $=id=>document.getElementById(id);let level=1,played=0,last=null,history=[];
 function setLevel(n){level=n;document.querySelectorAll(".level").forEach(b=>b.classList.toggle("active",+b.dataset.level===n))}
-function draw(){const who=$("who").value;const pool=tasks.filter(x=>x.l===level && x!==last);const item=pool[Math.floor(Math.random()*pool.length)];last=item;played++;history.unshift(item.t);if(history.length>5)history.pop();$("symbol").textContent=item.s;$("category").textContent=item.c.toUpperCase();$("task").textContent=item.t;$("target").textContent="Für: "+(who==="Zufällig"?(Math.random()<.5?"Er":"Sie"):who);$("turn").textContent="LEVEL "+level+" · RUNDE "+played;$("counter").textContent=played+" Aufgaben gespielt";$("historyPanel").style.display="block";$("history").textContent=history.join(" · ")}
+function draw(){const who=$("who").value;const mode=$("mode").value;const pool=tasks.filter(x=>x.l===level && (mode==="mix"||x.kind===mode) && x!==last);const item=pool[Math.floor(Math.random()*pool.length)];last=item;played++;history.unshift(item.t);if(history.length>5)history.pop();$("symbol").textContent=item.s;$("category").textContent=(item.kind==="truth"?"WAHRHEIT · ":"INTIM-CHALLENGE · ")+item.c.toUpperCase();$("task").textContent=item.t;$("target").textContent="Für: "+(who==="Zufällig"?(Math.random()<.5?"Er":"Sie"):who);$("turn").textContent=(mode==="truth"?"WAHRHEIT":mode==="intimate"?"INTIM-CHALLENGE":"WAHRHEIT ODER INTIM")+" · LEVEL "+level+" · RUNDE "+played;$("counter").textContent=played+" Aufgaben gespielt";$("historyPanel").style.display="block";$("history").textContent=history.join(" · ")}
 function showGame(){if(!$("adult").checked){alert("Bitte bestätigt zuerst, dass ihr beide mindestens 18 seid und freiwillig mitspielt.");return}level=+$("levelSelect").value;$("setup").classList.add("hide");$("game").classList.add("show");$("levels").innerHTML=[1,2,3,4,5].map(n=>'<button class="level" data-level="'+n+'">'+n+' · '+["Locker","Flirty","Nähe","Mutig","Maximum"][n-1]+'</button>').join("");document.querySelectorAll(".level").forEach(b=>b.addEventListener("click",()=>{setLevel(+b.dataset.level);last=null;draw()}));setLevel(level);draw()}
 $("start").addEventListener("click",showGame);$("draw").addEventListener("click",draw);$("skip").addEventListener("click",draw);$("pause").addEventListener("click",()=>{if(confirm("Spiel wirklich beenden und zur Auswahl zurückkehren?")){$("game").classList.remove("show");$("setup").classList.remove("hide");$("historyPanel").style.display="none";played=0;history=[];last=null}});
 </script></body></html>
